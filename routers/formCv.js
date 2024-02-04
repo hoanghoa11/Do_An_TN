@@ -1,8 +1,15 @@
-var UserRole = require('../models/userRole.js');
+var TagFormCV = require('../models/tagFormCv');
+var FormCV = require('../models/formCv');
+var Tag = require('../models/tag');
 require('dotenv').config()
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
-    UserRole.create(req.body).then(data => {
+    FormCV.create(req.body, {
+        include: {
+            model: TagFormCV,
+            as: 'tagform'
+        }
+    }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
@@ -15,26 +22,26 @@ exports.findall = (req, res) => {
     let soLuongBoQua = (page - 1) * PAGE_SIZE;
     if (page || status) {
         if (page && !status) {
-            UserRole.findAndCountAll({ order: [["id", "DESC"]], offset: soLuongBoQua, limit: PAGE_SIZE }).then(data => {
+            FormCV.findAndCountAll({ order: [["id", "DESC"]], offset: soLuongBoQua, limit: PAGE_SIZE, include: [Tag] }).then(data => {
                 res.json({ data: data })
             }).catch(er => {
                 throw er;
             })
         } else if (status && !page) {
-            UserRole.findAndCountAll({ where: { status: status }, order: [["id", "DESC"]] }).then(data => {
+            FormCV.findAndCountAll({ where: { status: status }, order: [["id", "DESC"]], include: [Tag] }).then(data => {
                 res.json({ data: data })
             }).catch(er => {
                 throw er;
             })
         } else {
-            UserRole.findAndCountAll({ where: { status: status }, order: [["id", "DESC"]], offset: soLuongBoQua, limit: PAGE_SIZE }).then(data => {
+            FormCV.findAndCountAll({ where: { status: status }, order: [["id", "DESC"]], offset: soLuongBoQua, limit: PAGE_SIZE, include: [Tag] }).then(data => {
                 res.json({ data: data })
             }).catch(er => {
                 throw er;
             })
         }
     } else {
-        UserRole.findAndCountAll({ order: [["id", "DESC"]] }).then(data => {
+        FormCV.findAndCountAll({ order: [["id", "DESC"]], include: [Tag] }).then(data => {
             res.json({ data: data })
         }).catch(er => {
             throw er;
@@ -42,22 +49,21 @@ exports.findall = (req, res) => {
     }
 }
 exports.findone = (req, res) => {
-    UserRole.findOne({ where: { id: req.params.id } }).then(data => {
+    FormCV.findOne({ where: { id: req.params.id }, include: [Tag] }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.delete = (req, res) => {
-    UserRole.destroy({ where: { id: req.params.id } }).then(data => {
+    FormCV.destroy({ where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.update = (req, res) => {
-    console.log(req.body,req.params.id);
-    UserRole.update(req.body, { where: { userId: req.params.id } }).then(data => {
+    FormCV.update(req.body, { where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;

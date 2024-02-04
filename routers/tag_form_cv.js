@@ -1,35 +1,35 @@
-var UserTag = require('../models/userTag.js');
+var TagFormCV = require('../models/tagFormCv');
 
 exports.create = (req, res) => {
-    UserTag.bulkCreate(req.body).then(data => {
+    TagFormCV.bulkCreate(req.body).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.findall = (req, res) => {
-    UserTag.findAll().then(data => {
+    TagFormCV.findAll().then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.findone = (req, res) => {
-    UserTag.findOne({ where: { id: req.params.id } }).then(data => {
+    TagFormCV.findOne({ where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.delete = (req, res) => {
-    UserTag.destroy({ where: { userId: req.params.id } }).then(data => {
+    TagFormCV.destroy({ where: { FormCVId: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.update = (req, res) => {
-    UserTag.update(req.body, { where: { id: req.params.id } }).then(data => {
+    TagFormCV.update(req.body, { where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;

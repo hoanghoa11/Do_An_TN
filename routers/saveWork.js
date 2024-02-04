@@ -1,35 +1,35 @@
-var UserTag = require('../models/userTag.js');
+var SaveWork = require('../models/saveWork');
 
 exports.create = (req, res) => {
-    UserTag.bulkCreate(req.body).then(data => {
+    SaveWork.bulkCreate(req.body).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.findall = (req, res) => {
-    UserTag.findAll().then(data => {
+    SaveWork.findAll({ where: { userId: req.query.userId, workId: req.query.workId } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.findone = (req, res) => {
-    UserTag.findOne({ where: { id: req.params.id } }).then(data => {
+    SaveWork.findAll(req.body).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.delete = (req, res) => {
-    UserTag.destroy({ where: { userId: req.params.id } }).then(data => {
+    SaveWork.destroy({ where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
     })
 }
 exports.update = (req, res) => {
-    UserTag.update(req.body, { where: { id: req.params.id } }).then(data => {
+    SaveWork.update(req.body, { where: { id: req.params.id } }).then(data => {
         res.json({ data: data })
     }).catch(er => {
         throw er;
