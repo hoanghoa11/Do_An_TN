@@ -1,49 +1,12 @@
-var Candidate = require('../models/candidate');
-require('dotenv').config()
-let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
-exports.create = (req, res) => {
-    Candidate.create(req.body).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findall = (req, res) => {
-    var page = req.query.page;
-    if (page) {
-        page = parseInt(page)
-        let soLuongBoQua = (page - 1) * PAGE_SIZE;
-        Candidate.findAndCountAll({ offset: soLuongBoQua, limit: PAGE_SIZE }).then(data => {
-            res.json({ data: data })
-        }).catch(er => {
-            throw er;
-        })
-    } else {
-        Candidate.findAndCountAll().then(data => {
-            res.json({ data: data })
-        }).catch(er => {
-            throw er;
-        })
-    }
-}
-exports.findone = (req, res) => {
-    Candidate.findOne({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.delete = (req, res) => {
-    Candidate.destroy({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.update = (req, res) => {
-    Candidate.update(req.body, { where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
+module.exports = app => {
+    var Candidate = require('../controllers/candidate');
+    var router = require('express').Router();
+
+    router.post("/", Candidate.create);
+    router.get('/', Candidate.findall);
+    router.get('/:id', Candidate.findone);
+    router.delete('/:id', Candidate.delete);
+    router.patch('/:id', Candidate.update);
+
+    app.use("/candidates", router);
 }

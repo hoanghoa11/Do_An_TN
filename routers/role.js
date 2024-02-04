@@ -1,37 +1,12 @@
-var Role = require('../models/role');
+module.exports = app => {
+    var Role = require('../controllers/role');
+    var router = require('express').Router();
 
-exports.create = (req, res) => {
-    Role.create(req.body).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findall = (req, res) => {
-    Role.findAndCountAll().then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findone = (req, res) => {
-    Role.findOne({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.delete = (req, res) => {
-    Role.destroy({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.update = (req, res) => {
-    Role.update(req.body, { where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
+    router.post("/", Role.create);
+    router.get('/', Role.findall);
+    router.get('/:id', Role.findone);
+    router.delete('/:id', Role.delete);
+    router.patch('/:id', Role.update);
+
+    app.use("/roles", router);
 }

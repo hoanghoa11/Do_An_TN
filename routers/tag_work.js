@@ -1,47 +1,13 @@
-var TagWork = require('../models/tagWork.js');
-
-exports.create = (req, res) => {
-  TagWork.bulkCreate(req.body)
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
-};
-exports.findall = (req, res) => {
-  TagWork.findAll()
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
-};
-exports.findone = (req, res) => {
-  TagWork.findOne({ where: { id: req.params.id } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
-};
-exports.delete = (req, res) => {
-  TagWork.destroy({ where: { workId: req.params.id } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
-};
-exports.update = (req, res) => {
-  TagWork.update(req.body, { where: { id: req.params.id } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
-};
+module.exports = (app) => {
+    var TagWork = require('../controllers/tag_work');
+    var router = require('express').Router();
+  
+    router.post('/', TagWork.create);
+    router.get('/', TagWork.findall);
+    router.get('/:id', TagWork.findone);
+    router.delete('/:id', TagWork.delete);
+    router.patch('/:id', TagWork.update);
+  
+    app.use('/tagWorks', router);
+  };
+  

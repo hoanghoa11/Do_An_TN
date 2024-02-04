@@ -1,37 +1,12 @@
-var TagFormCV = require('../models/tagFormCv');
+module.exports = app => {
+    var TagFormCV = require('../controllers/tag_form_cv');
+    var router = require('express').Router();
 
-exports.create = (req, res) => {
-    TagFormCV.bulkCreate(req.body).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findall = (req, res) => {
-    TagFormCV.findAll().then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findone = (req, res) => {
-    TagFormCV.findOne({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.delete = (req, res) => {
-    TagFormCV.destroy({ where: { FormCVId: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.update = (req, res) => {
-    TagFormCV.update(req.body, { where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
+    router.post("/", TagFormCV.create);
+    router.get('/', TagFormCV.findall);
+    router.get('/:id', TagFormCV.findone);
+    router.delete('/:id', TagFormCV.delete);
+    router.patch('/:id', TagFormCV.update);
+
+    app.use("/tagFormCVs", router);
 }

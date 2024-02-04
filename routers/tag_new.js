@@ -1,37 +1,12 @@
-var TagNew = require('../models/tagnew');
+module.exports = app => {
+    var TagNew = require('../controllers/tag_new');
+    var router = require('express').Router();
 
-exports.create = (req, res) => {
-    TagNew.bulkCreate(req.body).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findall = (req, res) => {
-    TagNew.findAll().then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.findone = (req, res) => {
-    TagNew.findOne({ where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.delete = (req, res) => {
-    TagNew.destroy({ where: { newId: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
-}
-exports.update = (req, res) => {
-    TagNew.update(req.body, { where: { id: req.params.id } }).then(data => {
-        res.json({ data: data })
-    }).catch(er => {
-        throw er;
-    })
+    router.post("/", TagNew.create);
+    router.get('/', TagNew.findall);
+    router.get('/:id', TagNew.findone);
+    router.delete('/:id', TagNew.delete);
+    router.patch('/:id', TagNew.update);
+
+    app.use("/tagNews", router);
 }
